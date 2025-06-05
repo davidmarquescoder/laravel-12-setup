@@ -5,3 +5,4 @@ SETUP CONFIGS
 - PestPHP
 - PINT
 - CaptainHook
+- Spatie Permissions
