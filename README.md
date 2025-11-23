@@ -5,7 +5,7 @@
 1. Clone o repositório:
 
     ```bash
-    git clone git@github.com:smart-creative-solutions/site-back.git
+    git clone git@github.com:davidmarquescoder/laravel-12-setup.git
     ```
 
 2. Entre no diretório do projeto:
@@ -63,7 +63,7 @@
     ```
 
     ```bash
-    vendor/bin/captainhook install --run-mode=docker --run-exec="docker exec -i site-back-app-1"
+    vendor/bin/captainhook install --run-mode=docker --run-exec="docker exec -i <NomeContainerDoApp>"
     ```
 
     Durante a instalação, responda às perguntas conforme indicado:
