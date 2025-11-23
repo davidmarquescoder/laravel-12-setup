@@ -10,6 +10,13 @@
         "declare_equal_normalize": {
             "space": "single"
         },
+        "binary_operator_spaces": {
+            "default": "single_space",
+            "operators": {
+                "=": "align_single_space_minimal",
+                "=>": "align_single_space_minimal"
+            }
+        },
         "elseif": true,
         "full_opening_tag": true,
         "function_declaration": true,
@@ -76,7 +83,9 @@
         "ternary_operator_spaces": true,
         "visibility_required": true,
 
-        "array_syntax": true,
+        "array_syntax": {
+            "syntax": "short"
+        },
         "array_indentation": true,
         "align_multiline_comment": true,
         "clean_namespace": true,
