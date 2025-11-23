@@ -17,7 +17,7 @@
 3. Copie o arquivo de exemplo de configuração:
 
     ```bash
-    cp .env.exemaple .env
+    cp .env.example .env
     ```
 
 4. Configure as variáveis de ambiente no arquivo `.env`:
