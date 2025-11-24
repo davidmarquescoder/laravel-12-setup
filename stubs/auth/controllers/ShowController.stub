@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
+
+class ShowController extends Controller
+{
+    public function __invoke(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user()->load([
+                'organization',
+                'roles',
+            ]);
+
+            return response()->json(
+                [
+                    'user' => $user,
+                ],
+                Response::HTTP_OK,
+            );
+        } catch (Exception $e) {
+            return response()->json(
+                [
+                    'message' => $e->getMessage(),
+                ],
+                $e->getCode(),
+            );
+        }
+    }
+}

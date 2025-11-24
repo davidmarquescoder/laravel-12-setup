@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use Exception;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
+use Symfony\Component\HttpFoundation\Response;
+
+class StoreController extends Controller
+{
+    public function __construct()
+    {
+    }
+
+    public function __invoke(LoginRequest $request): JsonResponse
+    {
+        try {
+            $user = User::where(column: 'email', operator: $request->email)->first();
+
+            $request->authenticate();
+            $request->session()->regenerate();
+
+            return response()->json(
+                [
+                    'user' => $user,
+                ],
+                Response::HTTP_OK,
+            );
+        } catch (Exception $e) {
+            return response()->json(
+                [
+                    'message' => $e->getMessage(),
+                ],
+                500,
+            );
+        }
+    }
+}

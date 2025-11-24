@@ -76,3 +76,76 @@
     - **Install post-merge hook?** → `n`
     - **Install post-checkout hook?** → `n`
     - **Install post-rewrite hook?** → `n`
+
+## Configuração de Autenticação
+
+> **💡 Autenticação Pronta!**  
+> Este setup inclui um comando personalizado que gera toda a estrutura de autenticação. Se você deseja utilizar nosso modelo de autenticação com Laravel Sanctum e Sessão, siga as instruções abaixo. Caso prefira implementar sua própria solução de autenticação, sinta-se à vontade para pular esta seção.
+
+11. Gere a estrutura de autenticação:
+
+    ```bash
+    php artisan make:auth
+    ```
+
+    Este comando criará toda a estrutura necessária para autenticação. Após executá-lo, você precisará realizar as seguintes configurações:
+
+### Configuração do Laravel Sanctum
+
+12. Configure os domínios stateful no arquivo `config/sanctum.php`:
+
+    Localize a chave `stateful` e substitua por:
+
+    ```php
+    'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', sprintf(
+        '%s%s%s',
+        'localhost,localhost:3000,127.0.0.1,127.0.0.1:3000,::1',
+        Sanctum::currentApplicationUrlWithPort(),
+        env('FRONTEND_URL') ? ','.parse_url(env('FRONTEND_URL'), PHP_URL_HOST) : ''
+    ))),
+    ```
+
+13. Adicione as variáveis de ambiente no arquivo `.env`:
+
+    ```env
+    SANCTUM_STATEFUL_DOMAINS=localhost:3000,127.0.0.1:3000
+    FRONTEND_URL=http://localhost:3000
+    ```
+
+### Configuração do CORS
+
+14. Habilite o suporte a credenciais no arquivo `config/cors.php`:
+
+    ```php
+    'supports_credentials' => true,
+    ```
+
+### Configuração de Middlewares e Exceções
+
+15. Configure os middlewares no arquivo `bootstrap/app.php`:
+
+    No método `withMiddleware`, adicione:
+
+    ```php
+    $middleware->statefulApi();
+    $middleware->redirectGuestsTo(fn (Request $request) => route('api.auth.store'));
+    ```
+
+16. Configure o tratamento de exceções de autenticação no arquivo `bootstrap/app.php`:
+
+    No método `withExceptions`, adicione:
+
+    ```php
+    $exceptions->render(function (AuthenticationException $e, Request $request) {
+        if ($request->is('api/*')) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+    });
+    ```
+
+    > **Nota:** Não esqueça de importar as classes necessárias no topo do arquivo:
+    > - `use Illuminate\Http\Request;`
+    > - `use Illuminate\Auth\AuthenticationException;`
+    > - `use Symfony\Component\HttpFoundation\Response;`
