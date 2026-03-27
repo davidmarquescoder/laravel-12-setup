@@ -3,9 +3,39 @@
 namespace {{ namespace }};
 
 {{ factoryImport }}
+use App\Models\Traits\BelongsToUser;
+use App\Models\Traits\BelongsToCompany;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class {{ class }} extends Model
 {
+    use HasUuids;
+    use HasFactory;
+    use SoftDeletes;
+
+    /**
+     * NOTE Traits Personalizadas: BelongsToUser e BelongsToCompany
+     * NOTE Configurações de Tenancy | Global Scopes
+     *
+     * - BelongsToUser: Associa o paciente ao usuário logado automaticamente.
+     *
+     * - BelongsToCompany: Associa o paciente à empresa do usuário logado automaticamente.
+     * - BelongsToCompany: Filtra os pacientes apenas para a empresa do usuário logado automaticamente usando o escopo CompanyScope.
+     */
+    use BelongsToUser;
+    use BelongsToCompany;
+
+    protected $fillable = [];
+
+    protected $hidden = [];
+
+    protected function casts(): array
+    {
+        return [];
+    }
+
     {{ factory }}
 }
