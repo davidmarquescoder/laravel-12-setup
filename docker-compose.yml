@@ -1,5 +1,6 @@
 services:
     app:
+        container_name: laravel-app
         build:
             context: .
             dockerfile: Dockerfile
@@ -13,10 +14,11 @@ services:
             - public_network
 
     nginx:
+        container_name: laravel-nginx
         image: nginx:alpine
         restart: unless-stopped
         ports:
-            - "8989:80"
+            - "8000:80"
         volumes:
             - ./:/var/www
             - ./docker/nginx/:/etc/nginx/conf.d/
@@ -24,6 +26,7 @@ services:
             - public_network
 
     db:
+        container_name: laravel-db
         image: mysql:8.3
         restart: unless-stopped
         environment:
@@ -39,6 +42,7 @@ services:
             - public_network
 
     queue:
+        container_name: laravel-queue
         build:
             context: .
             dockerfile: Dockerfile
@@ -53,6 +57,7 @@ services:
             - public_network
 
     reverb:
+        container_name: laravel-reverb
         build:
             context: .
             dockerfile: Dockerfile
@@ -69,6 +74,7 @@ services:
             - public_network
 
     phpmyadmin:
+        container_name: laravel-myadmin
         image: phpmyadmin/phpmyadmin
         restart: unless-stopped
         ports:
@@ -81,6 +87,7 @@ services:
             - public_network
 
     redis:
+        container_name: laravel-redis
         image: redis:latest
         networks:
             - public_network

@@ -149,3 +149,13 @@
     > - `use Illuminate\Http\Request;`
     > - `use Illuminate\Auth\AuthenticationException;`
     > - `use Symfony\Component\HttpFoundation\Response;`
+
+
+php artisan install:api
+
+php artisan install:broadcasting
+composer require laravel/reverb --with-all-dependencies
+composer require spatie/laravel-permission
+php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+composer require --dev captainhook/captainhook
+composer require laravel/pint --dev
